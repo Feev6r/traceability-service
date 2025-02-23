@@ -1,10 +1,7 @@
 spring:
   application:
     name: traceability-service
-#   datasource:
-#     url: 
-#     username: 
-#     password: 
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,7 +11,12 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: 
+      database: Traceability-db
+
+my-app:
+  security:
+    jwt:
+      secret-key: aa51197e3861ba9d8e7d3add5f2bc30862c891e0a3762935c8b8ecf6a61a9994
 
 server:
   port: 8082

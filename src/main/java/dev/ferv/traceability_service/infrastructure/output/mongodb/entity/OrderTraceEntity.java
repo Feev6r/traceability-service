@@ -3,11 +3,11 @@ package dev.ferv.traceability_service.infrastructure.output.mongodb.entity;
 import java.time.Duration;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +23,11 @@ public class OrderTraceEntity {
     @Id
     String id;
 
+    Long clientId;
     Long orderId;
 
-    List<StateEntity> states;
+    List<StateTraceEntity> states;
 
-    Duration time; //cambiar futuramente
-
-    @DBRef
-    EmployeeTraceEntity employeeTrace;
-
+    @Field(name = "DuarationInSeconds")
+    Duration duration; 
 }
