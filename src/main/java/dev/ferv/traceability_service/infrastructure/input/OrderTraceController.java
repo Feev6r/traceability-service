@@ -30,9 +30,12 @@ public class OrderTraceController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/update/{idOrder}/{state}")
-    public String putMethodName(@PathVariable Long idOrder, @PathVariable States state) {
-        return "";
+    @PutMapping("/update/{orderTraceId}/{newState}")
+    public ResponseEntity<Void> putMethodName(@PathVariable String orderTraceId, @PathVariable States newState) {
+
+        orderTraceService.updateStates(orderTraceId, newState);
+        return ResponseEntity.noContent().build();
+
     }
     
 

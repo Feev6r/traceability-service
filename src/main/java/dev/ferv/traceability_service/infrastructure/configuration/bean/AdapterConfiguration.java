@@ -9,6 +9,7 @@ import dev.ferv.traceability_service.domain.port.out.IOrderTracePort;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.adapter.EmployeeTraceAdapter;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.adapter.OrderTraceAdapter;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.mapper.OrderTraceEntityMapper;
+import dev.ferv.traceability_service.infrastructure.output.mongodb.mapper.StateTraceEntityMapper;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.repository.OrderTraceRepository;
 import dev.ferv.traceability_service.infrastructure.output.security.adapter.JwtAdapter;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,11 @@ public class AdapterConfiguration {
 
     private final OrderTraceRepository orderTraceRepository;
     private final OrderTraceEntityMapper orderTraceEntityMapper;
+    private final StateTraceEntityMapper stateTraceEntityMapper;
 
     @Bean
     IOrderTracePort orderTracePort(){
-        return new OrderTraceAdapter(orderTraceRepository, orderTraceEntityMapper);
+        return new OrderTraceAdapter(orderTraceRepository, orderTraceEntityMapper, stateTraceEntityMapper);
     }
 
     @Bean

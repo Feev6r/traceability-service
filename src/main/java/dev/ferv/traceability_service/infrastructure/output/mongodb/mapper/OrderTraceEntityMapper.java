@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import dev.ferv.traceability_service.domain.model.OrderTrace;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.entity.OrderTraceEntity;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = StateTraceEntityMapper.class)
 public interface OrderTraceEntityMapper {
 
     OrderTrace toOrderTrace(OrderTraceEntity orderTraceEntity);
