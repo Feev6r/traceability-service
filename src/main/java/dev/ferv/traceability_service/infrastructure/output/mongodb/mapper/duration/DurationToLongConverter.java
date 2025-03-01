@@ -11,7 +11,7 @@ public class DurationToLongConverter implements Converter<Duration, Long> {
         if (source == null) {
             return null; // Si el Duration es null, devuelve null
         }
-        return source.toMillis(); // Convierte Duration a milisegundos (long)
+        return source.toSeconds(); // Convierte Duration a milisegundos (long)
     }
 }
 

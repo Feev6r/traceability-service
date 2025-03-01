@@ -3,6 +3,8 @@ package dev.ferv.traceability_service.domain.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import dev.ferv.traceability_service.domain.model.OrderTrace;
 import dev.ferv.traceability_service.domain.model.StateTrace;
 import dev.ferv.traceability_service.domain.model.States;
 import dev.ferv.traceability_service.domain.port.out.IOrderTracePort;
@@ -18,7 +20,7 @@ public class OrderTraceDomainService implements IOrderTraceDomainService{
 
     @Override
     public Duration calculateDuration(List<StateTrace> states) {
-        if (states == null) {
+        if (states == null || states.get(states.size() -1).getState() != States.DELIVERED) {
             throw new IllegalArgumentException("The order state has to be delivered to calculate the final time duration of the order");
         }
 
@@ -29,10 +31,18 @@ public class OrderTraceDomainService implements IOrderTraceDomainService{
     }
 
     @Override
-    public void addStateTrace(String orderTraceId, States state){
+    public void addStateTrace(Long orderId, States state){
         StateTrace stateTrace = new StateTrace(state);
 
-        orderTracePort.updateOrderTrace(orderTraceId, stateTrace);
+        OrderTrace orderTrace = orderTracePort.getOrderTraceByOrderId(orderId);
+        orderTrace.getStates().add(stateTrace);
+
+        if(state == States.DELIVERED){
+            Duration totalDuration = calculateDuration(orderTrace.getStates());
+            orderTrace.setDuration(totalDuration);
+        }
+
+        orderTracePort.updateOrderTrace(orderId, orderTrace);
     }
 
 }

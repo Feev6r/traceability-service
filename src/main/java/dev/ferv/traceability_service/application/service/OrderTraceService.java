@@ -1,6 +1,7 @@
 package dev.ferv.traceability_service.application.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.ferv.traceability_service.application.dto.request.OrderTraceRequest;
 import dev.ferv.traceability_service.application.mapper.OrderTraceRequestMapper;
@@ -27,16 +28,16 @@ public class OrderTraceService implements IOrderTraceService{
     }
 
     @Override
+    @Transactional
     public void createOrderTrace(OrderTraceRequest orderTraceRequest) {
         OrderTrace orderTrace = orderTraceRequestMapper.toOrderTrace(orderTraceRequest);
         createOrderTraceUseCase.createOrderTrace(orderTrace);
     }
 
     @Override
-    public void updateStates(String orderTraceId, States state) {
+    @Transactional
+    public void updateStates(Long orderTraceId, States state) {
         updateOrderTraceStateUseCase.updateState(orderTraceId, state);
     }
-
-    
 
 }

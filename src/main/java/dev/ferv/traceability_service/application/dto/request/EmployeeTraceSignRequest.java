@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EmployeeTrace {
+public class EmployeeTraceSignRequest {
 
     Long employeeId;
     Long orderId;

@@ -1,5 +1,6 @@
 package dev.ferv.traceability_service.infrastructure.output.mongodb.entity;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -24,6 +25,6 @@ public class EmployeeTraceEntity {
 
     List<String> ordersTraceId;
     
-    String productiveAvarageTime;
+    Duration productiveAvarageTime;
 
 }

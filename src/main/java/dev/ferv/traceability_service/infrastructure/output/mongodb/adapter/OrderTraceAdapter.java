@@ -3,7 +3,6 @@ package dev.ferv.traceability_service.infrastructure.output.mongodb.adapter;
 import org.springframework.stereotype.Component;
 
 import dev.ferv.traceability_service.domain.model.OrderTrace;
-import dev.ferv.traceability_service.domain.model.StateTrace;
 import dev.ferv.traceability_service.domain.port.out.IOrderTracePort;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.entity.OrderTraceEntity;
 import dev.ferv.traceability_service.infrastructure.output.mongodb.mapper.OrderTraceEntityMapper;
@@ -25,15 +24,36 @@ public class OrderTraceAdapter implements IOrderTracePort {
     }
 
     @Override
-    public void updateOrderTrace(String orderTraceId, StateTrace orderTrace) {
+    public void updateOrderTrace(Long orderId, OrderTrace orderTrace) {
 
-        OrderTraceEntity orderTraceEntity = orderTraceRepository.findById(orderTraceId)
-            .orElseThrow(RuntimeException::new);
+        OrderTraceEntity orderTraceEntity = orderTraceRepository.findByOrderId(orderId)
+            .orElseThrow(() -> new RuntimeException("orderTraceEntity not found in the method updateOrderTrace()"));
 
-        orderTraceEntity.getStates().add(stateTraceEntityMapper.toEntity(orderTrace));
+        //TODO MAKE EXEPTION FOR OrderTraceEntity NOT FAUND
+
+        if(orderTrace.getStates() != null){
+            orderTraceEntity.setStates(stateTraceEntityMapper.toEntityList(orderTrace.getStates()));
+        }
+        if(orderTrace.getDuration() != null){
+            orderTraceEntity.setDuration(orderTrace.getDuration());
+        }
 
         orderTraceRepository.save(orderTraceEntity);
     }
 
-    
+    @Override
+    public OrderTrace getOrderById(String orderTraceId) {
+
+        return orderTraceEntityMapper.toOrderTrace(orderTraceRepository.findById(orderTraceId)
+            .orElseThrow(() -> new RuntimeException("orderTraceEntity not found in the method getOrderById()")));
+    }
+
+    public OrderTrace getOrderTraceByOrderId(Long orderId){
+        OrderTraceEntity orderTraceEntity = orderTraceRepository.findByOrderId(orderId)
+            .orElseThrow(() -> new RuntimeException("orderTraceEntity not found in the method getOrderTraceByOrderId()"));
+
+        return orderTraceEntityMapper.toOrderTrace(orderTraceEntity);
+    } 
+
+    //TODO MAKE THE EXEPTIONS HANDLER
 }

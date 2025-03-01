@@ -4,6 +4,6 @@ import dev.ferv.traceability_service.domain.model.States;
 
 public interface IUpdateOrderTraceStateUseCase {
 
-    void updateState(String orderTraceId, States state);
+    void updateState(Long orderId, States state);
 
 }

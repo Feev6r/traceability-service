@@ -7,6 +7,6 @@ import dev.ferv.traceability_service.domain.model.States;
 public interface IOrderTraceService {
 
     void createOrderTrace(OrderTraceRequest orderTraceRequest);
-    void updateStates(String orderTraceId, States state);
+    void updateStates(Long orderId, States state);
 
 }

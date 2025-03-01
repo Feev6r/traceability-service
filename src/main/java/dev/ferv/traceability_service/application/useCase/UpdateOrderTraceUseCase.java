@@ -15,7 +15,7 @@ public class UpdateOrderTraceUseCase implements IUpdateOrderTraceStateUseCase{
     }
 
     @Override
-    public void updateState(String orderTraceId, States state) {
+    public void updateState(Long orderTraceId, States state) {
         orderTraceDomainService.addStateTrace(orderTraceId, state);
     }
 

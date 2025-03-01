@@ -5,5 +5,6 @@ public enum States {
     PENDING,
     PREPARING,
     READY,
-    DELIVERED
+    DELIVERED,
+    CANCELLED
 }
