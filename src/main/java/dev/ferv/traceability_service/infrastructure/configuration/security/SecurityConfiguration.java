@@ -25,7 +25,8 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/orderTrace/create").hasRole(Roles.CLIENT.name())
                 .requestMatchers("/orderTrace/update").hasRole(Roles.EMPLOYEE.name())
-                .requestMatchers("/employeeTrace/").hasRole(Roles.EMPLOYEE.name())
+                .requestMatchers("/employeeTrace/sign/{orderId}/{employeeId}").hasRole(Roles.EMPLOYEE.name())
+                .requestMatchers("/employeeTrace/getRanking").hasRole(Roles.OWNER.name())
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

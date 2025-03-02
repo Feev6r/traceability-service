@@ -29,7 +29,7 @@ public class OrderTraceAdapter implements IOrderTracePort {
         OrderTraceEntity orderTraceEntity = orderTraceRepository.findByOrderId(orderId)
             .orElseThrow(() -> new RuntimeException("orderTraceEntity not found in the method updateOrderTrace()"));
 
-        //TODO MAKE EXEPTION FOR OrderTraceEntity NOT FAUND
+        //TODO MAKE EXEPTION FOR OrderTraceEntity NOT FAOND
 
         if(orderTrace.getStates() != null){
             orderTraceEntity.setStates(stateTraceEntityMapper.toEntityList(orderTrace.getStates()));
@@ -54,6 +54,7 @@ public class OrderTraceAdapter implements IOrderTracePort {
 
         return orderTraceEntityMapper.toOrderTrace(orderTraceEntity);
     } 
+
 
     //TODO MAKE THE EXEPTIONS HANDLER
 }

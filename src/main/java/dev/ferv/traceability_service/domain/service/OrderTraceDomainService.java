@@ -8,14 +8,18 @@ import dev.ferv.traceability_service.domain.model.OrderTrace;
 import dev.ferv.traceability_service.domain.model.StateTrace;
 import dev.ferv.traceability_service.domain.model.States;
 import dev.ferv.traceability_service.domain.port.out.IOrderTracePort;
+import dev.ferv.traceability_service.domain.service.interfaces.IEmployeeTraceDomainService;
 import dev.ferv.traceability_service.domain.service.interfaces.IOrderTraceDomainService;
 
 public class OrderTraceDomainService implements IOrderTraceDomainService{
 
     private final IOrderTracePort orderTracePort;
+    private final IEmployeeTraceDomainService employeeTraceDomainService;
 
-    public OrderTraceDomainService(IOrderTracePort orderTracePort) {
+    public OrderTraceDomainService(IOrderTracePort orderTracePort,
+            IEmployeeTraceDomainService employeeTraceDomainService) {
         this.orderTracePort = orderTracePort;
+        this.employeeTraceDomainService = employeeTraceDomainService;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class OrderTraceDomainService implements IOrderTraceDomainService{
     }
 
     @Override
-    public void addStateTrace(Long orderId, States state){
+    public void addStateTrace(Long orderId, Long employeeId, States state){
         StateTrace stateTrace = new StateTrace(state);
 
         OrderTrace orderTrace = orderTracePort.getOrderTraceByOrderId(orderId);
@@ -40,6 +44,8 @@ public class OrderTraceDomainService implements IOrderTraceDomainService{
         if(state == States.DELIVERED){
             Duration totalDuration = calculateDuration(orderTrace.getStates());
             orderTrace.setDuration(totalDuration);
+
+            employeeTraceDomainService.updateProductivityTime(employeeId);
         }
 
         orderTracePort.updateOrderTrace(orderId, orderTrace);

@@ -20,7 +20,7 @@ public class ServiceConfiguration {
 
     @Bean
     IOrderTraceDomainService orderTraceDomainService(){
-        return new OrderTraceDomainService(orderTracePort);
+        return new OrderTraceDomainService(orderTracePort, employeeTraceDomainService());
     }
 
     @Bean

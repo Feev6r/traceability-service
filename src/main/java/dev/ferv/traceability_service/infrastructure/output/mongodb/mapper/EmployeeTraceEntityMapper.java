@@ -74,4 +74,19 @@ public class EmployeeTraceEntityMapper {
 
         return employeeTrace;
     }
+
+    public List<EmployeeTrace> toEmployeeTraceList(List<EmployeeTraceEntity> employeeTraceEntityList){   
+        if(employeeTraceEntityList == null){
+            return null;
+        }
+
+        List<EmployeeTrace> employeeTraceList = new ArrayList<>();
+        for (EmployeeTraceEntity employeeTraceEntity : employeeTraceEntityList) {
+            employeeTraceList.add(toEmployeeTrace(employeeTraceEntity)); 
+        }
+
+        return employeeTraceList;
+
+    }
+
 }

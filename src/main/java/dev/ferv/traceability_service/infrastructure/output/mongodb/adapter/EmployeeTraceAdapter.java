@@ -39,7 +39,7 @@ public class EmployeeTraceAdapter implements IEmployeeTracePort {
     }
 
     @Override
-    public void updateEmployeeTrace(EmployeeTrace employeeTrace, Long orderId) {
+    public void updateEmployeeTrace(EmployeeTrace employeeTrace) {
         employeeTraceRepository.save(employeeTraceEntityMapper.toEntity(employeeTrace));
     }
 
@@ -47,6 +47,11 @@ public class EmployeeTraceAdapter implements IEmployeeTracePort {
     public EmployeeTrace getEmployeeTraceByEmployeeId(Long employeeId) {
         return employeeTraceEntityMapper.toEmployeeTrace(employeeTraceRepository.findByEmployeeId(employeeId)
             .orElse(null));
+    }
+
+    @Override
+    public List<EmployeeTrace> getByProductiveTimeAsc() {
+        return employeeTraceEntityMapper.toEmployeeTraceList(employeeTraceRepository.findAllByOrderByProductiveAvarageTimeAsc());
     }
 
 }

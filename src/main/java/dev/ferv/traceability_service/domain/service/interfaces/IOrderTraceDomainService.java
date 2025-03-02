@@ -8,5 +8,5 @@ import dev.ferv.traceability_service.domain.model.States;
 
 public interface IOrderTraceDomainService {
     Duration calculateDuration(List<StateTrace> states);
-    void addStateTrace(Long orderId, States state);
+    void addStateTrace(Long orderId, Long employeeId, States state);
 }

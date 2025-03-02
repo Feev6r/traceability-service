@@ -2,6 +2,7 @@ package dev.ferv.traceability_service.domain.service;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import dev.ferv.traceability_service.domain.model.EmployeeTrace;
@@ -47,7 +48,10 @@ public class EmployeeTraceDomainService implements IEmployeeTraceDomainService {
         return avarageTime;
     }
 
-    private void updateEmployeeTraceOrders(EmployeeTrace employeeTrace, Long orderId){
+    @Override
+    public void updateProductivityTime(Long employeeId){
+
+        EmployeeTrace employeeTrace = employeeTracePort.getEmployeeTraceByEmployeeId(employeeId);
 
         List<String> orderTraceIds = getFinishedOrders(employeeTrace.getOrders());
 
@@ -55,10 +59,17 @@ public class EmployeeTraceDomainService implements IEmployeeTraceDomainService {
             employeeTrace.setProductiveAvarageTime(calculateProductivityTime(orderTraceIds));;
         }
 
+        employeeTracePort.updateEmployeeTrace(employeeTrace);
+
+    }
+
+
+    private void updateEmployeeTraceOrders(EmployeeTrace employeeTrace, Long orderId){
+
         OrderTrace orderTrace = orderTracePort.getOrderTraceByOrderId(orderId);
         employeeTrace.getOrders().add(orderTrace);
 
-        employeeTracePort.updateEmployeeTrace(employeeTrace, orderId);
+        employeeTracePort.updateEmployeeTrace(employeeTrace);
     }
     
     private void createEmployeeTrace(Long employeeId, Long orderId){
@@ -76,9 +87,27 @@ public class EmployeeTraceDomainService implements IEmployeeTraceDomainService {
             updateEmployeeTraceOrders(employeeTrace, orderId);
         
     }
+    
+    @Override
+    public List<EmployeeTrace> getByProductiveTimeAsc(List<Long> employeeIds){
+        return filterEmployeeRanking(employeeIds);
+    }
 
-    // public List<EmployeeTrace> getRankingByProductivityTime(){
-        //TODO MAKE getRankingByProductivityTime RIGH NOW
-    // }
+    private List<EmployeeTrace> filterEmployeeRanking(List<Long> employeeIds){
+        List<EmployeeTrace> employeeTraceRanking = employeeTracePort.getByProductiveTimeAsc();
+
+        List<EmployeeTrace> filteredEmployeeTraceRanking = new ArrayList<>();
+
+        HashMap<Long, Boolean> mp = new HashMap<>();
+        for (Long id : employeeIds) mp.put(id, true);
+
+        for (EmployeeTrace employeeTrace : employeeTraceRanking) {
+            if(mp.get(employeeTrace.getEmployeeId())){
+                filteredEmployeeTraceRanking.add(employeeTrace);
+            }
+        }
+
+        return filteredEmployeeTraceRanking;
+    }
 
 }
