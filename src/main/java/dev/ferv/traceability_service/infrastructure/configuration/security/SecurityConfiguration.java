@@ -23,6 +23,8 @@ public class SecurityConfiguration {
             .disable()
             )
             .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
                 .requestMatchers("/orderTrace/create").hasRole(Roles.CLIENT.name())
                 .requestMatchers("/orderTrace/update").hasRole(Roles.EMPLOYEE.name())
                 .requestMatchers("/employeeTrace/sign/{orderId}/{employeeId}").hasRole(Roles.EMPLOYEE.name())

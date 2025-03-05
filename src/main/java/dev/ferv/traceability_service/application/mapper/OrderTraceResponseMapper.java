@@ -6,11 +6,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import dev.ferv.traceability_service.application.dto.response.OrderTraceResponse;
 import dev.ferv.traceability_service.application.dto.response.StateTraceResponse;
 import dev.ferv.traceability_service.domain.model.OrderTrace;
 import dev.ferv.traceability_service.domain.model.StateTrace;
 
+@Component
 public class OrderTraceResponseMapper {
 
     private String toReadableTime(Duration duration){
@@ -64,11 +67,10 @@ public class OrderTraceResponseMapper {
             return null;
         }
 
-        OrderTraceResponse orderTraceResponse = new OrderTraceResponse(
-            orderTrace.getOrderId(), 
-            toStateTraceResponseList(orderTrace.getStates()),
-            toReadableTime(orderTrace.getDuration()) 
-        );
+        OrderTraceResponse orderTraceResponse = new OrderTraceResponse();
+        orderTraceResponse.setOrderId(orderTrace.getOrderId());
+        orderTraceResponse.setStates(toStateTraceResponseList(orderTrace.getStates()));
+        if(orderTrace.getDuration() != null) orderTraceResponse.setDuration(toReadableTime( orderTrace.getDuration()));
 
         return orderTraceResponse;
 

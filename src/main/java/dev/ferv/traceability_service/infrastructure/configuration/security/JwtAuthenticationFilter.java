@@ -31,6 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
         try {
 
+            String path = request.getRequestURI();
+
+            if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
+                filterChain.doFilter(request, response); // No aplica autenticación
+                return;
+            }
+
             String jwt = extractJwtFromRequest(request);
 
             if (jwt != null) {
